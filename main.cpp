@@ -64,6 +64,7 @@ int main() {
 
     int count = 0; // Number of strings
     int char_count = 0; // Number of characters in the current string
+    int node_count = 0;
     int c; // Character read from input
 
     Node *start_point;
@@ -79,53 +80,53 @@ int main() {
 
     while ((c = getchar()) != EOF) {
         if (c == '\n') {
-            strings[count][char_count] = '\0'; // terminate the current string
+            strings[count][char_count - 1] = '\0'; // terminate the current string
             count++;
             char_count = 0; // reset character count for the next string
-            if (count >= MAX_STRINGS) {
-                break; // stop if we reach the maximum number of strings
+            node_count = 0;
+            continue;
+        
+        } else {
+            strings[count][char_count] = c; 
+            char_count++;
+        } 
+        if (c != ' ') {
+
+            int cost;
+            switch (c) {
+                case '.':
+                    cost = 1;
+                    break;
+                case ',':
+                    cost = 2;
+                    break;
+                case 'o':
+                    cost = 3;
+                    break;
+                case '=':
+                    cost = 50;
+                    break;
+                case '0':
+                    cost = 0;
+                    start_point = &values[count][node_count];
+                    break;
+                case '2':
+                    cost = 0;
+                    end_point = &values[count][node_count];
+                    break;
+                default:
+                    cost = INF; //else
+                    break;
             }
-        } else if (c != ' ') {
-            if (char_count < MAX_LENGTH) {
-                strings[count][char_count] = c; // add character to the current string
-
-                int cost;
-                switch (c) {
-                    case '.':
-                        cost = 1;
-                        break;
-                    case ',':
-                        cost = 2;
-                        break;
-                    case 'o':
-                        cost = 3;
-                        break;
-                    case '=':
-                        cost = 50;
-                        break;
-                    case '0':
-                        cost = 0;
-                        start_point = &values[count][char_count];
-                        break;
-                    case '2':
-                        cost = 0;
-                        end_point = &values[count][char_count];
-                        break;
-                    default:
-                        cost = INF; //else
-                        break;
-                }
-                values[count][char_count] = Node(INF, cost, Point(-1, -1), Point(count, char_count));
-                
-
-
-                char_count++; // Increment character count
-            }
+            
+            values[count][node_count] = Node(INF, cost, Point(-1, -1), Point(count, node_count));
+            node_count++;
         }
+        
     }
     // put in the last null terminator
     if (char_count > 0 && count < MAX_STRINGS) {
-        strings[count][char_count] = '\0';
+        strings[count][char_count - 1] = '\0';
         count++;
     }
 
