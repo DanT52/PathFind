@@ -80,7 +80,11 @@ int main() {
 
     while ((c = getchar()) != EOF) {
         if (c == '\n') {
-            strings[count][char_count - 1] = '\0'; // terminate the current string
+            // get rid of trailing spaces
+            while (char_count > 0 && strings[count][char_count - 1] == ' ') {
+                char_count--;
+            }
+            strings[count][char_count] = '\0'; // terminate the current string
             count++;
             char_count = 0; // reset character count for the next string
             node_count = 0;
@@ -126,23 +130,26 @@ int main() {
     }
     // put in the last null terminator
     if (char_count > 0 && count < MAX_STRINGS) {
-        strings[count][char_count - 1] = '\0';
+        while (char_count > 0 && strings[count][char_count - 1] == ' ') {
+                char_count--;
+        }
+        strings[count][char_count] = '\0';
         count++;
     }
 
 
 
+    //debuggin print stuff
+    // // print what we read in
+    // for (int i = 0; i < count; i++) {
+    //     printf("%s\n", strings[i]); // Print each string
+    // }
+    // // print the start and end points
+    // printf("Start Point: (%d, %d)\n", start_point->self.x, start_point->self.y);
+    // printf("End Point: (%d, %d)\n", end_point->self.x, end_point->self.y);
 
-    // print what we read in
-    for (int i = 0; i < count; i++) {
-        printf("%s\n", strings[i]); // Print each string
-    }
-    // print the start and end points
-    printf("Start Point: (%d, %d)\n", start_point->self.x, start_point->self.y);
-    printf("End Point: (%d, %d)\n", end_point->self.x, end_point->self.y);
-
-    // print the grid size
-    printf("Grid Size: %d x %d\n", count, char_count);
+    // // print the grid size
+    // printf("Grid Size: %d x %d\n", count, char_count);
 
 
     int rows = count;
@@ -201,7 +208,20 @@ int main() {
 
     }
     
-    printf("Distance to End Point: %.1f\n", end_point->distance);
+    //go though the values, and print the path onto the input table
+
+    Point curr = end_point->parent;
+
+    while (!(curr == start_point->self)){
+        strings[curr.x][curr.y * 2] = '*';
+        curr = values[curr.x][curr.y].parent;
+    }
+
+        // print what we read in
+    for (int i = 0; i < count; i++) {
+        printf("%s\n", strings[i]); // Print each string
+    }
+    printf("Total cost: %.1f\n", end_point->distance);
 
     return 0;
 }
