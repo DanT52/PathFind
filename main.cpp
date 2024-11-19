@@ -114,7 +114,7 @@ int main() {
                     break;
             }
             
-            values[count][node_count] = Node(INF, INF, cost, Point(-1, -1), Point(count, node_count)); // Update constructor call
+            values[count][node_count] = Node(INF, INF, cost, Point(-1, -1), Point(count, node_count));
             node_count++;
         }
         
@@ -177,7 +177,7 @@ int main() {
                     // update if new distance smaller than current
                     if (newDist < j.distance) {
                         j.distance = newDist;
-                        j.h_dist = heuristic(j.self, end_point->self) + newDist; // Update h_dist for neighbor
+                        j.h_dist = heuristic(j.self, end_point->self) + newDist;
                         j.parent = n.self;
                         q.push(j);
                     }
