@@ -46,15 +46,20 @@ struct Point {
 
 struct Node {
     double distance; // Change from int to double
+    double h_dist; // New h_dist property
     int cost;
     Point parent;
     Point self;
 
-    Node(double distance = 0, int cost = 0, Point parent = Point(), Point self = Point()) : distance(distance), cost(cost), parent(parent), self(self) {}
+    Node(double distance = 0, double h_dist = INF, int cost = 0, Point parent = Point(), Point self = Point()) 
+        : distance(distance), h_dist(h_dist), cost(cost), parent(parent), self(self) {}
 };
 
 
-
+// get manhatten distance
+double heuristic(const Point& a, const Point& b) {
+    return abs(a.x - b.x) + abs(a.y - b.y);
+}
 
 
 int main() {
@@ -123,7 +128,7 @@ int main() {
                     break;
             }
             
-            values[count][node_count] = Node(INF, cost, Point(-1, -1), Point(count, node_count));
+            values[count][node_count] = Node(INF, INF, cost, Point(-1, -1), Point(count, node_count)); // Update constructor call
             node_count++;
         }
         
@@ -156,6 +161,7 @@ int main() {
     int cols = char_count;
 
     start_point->distance = 0;
+    start_point->h_dist = heuristic(start_point->self, end_point->self); // Initialize h_dist for start_point
     q.push(*start_point);
 
     while (!q.empty()) {
@@ -197,6 +203,7 @@ int main() {
                     // update if new distance smaller than current
                     if (newDist < j.distance) {
                         j.distance = newDist;
+                        j.h_dist = heuristic(j.self, end_point->self); // Update h_dist for neighbor
                         j.parent = n.self;
                         q.push(j);
                     }
