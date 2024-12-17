@@ -1,6 +1,6 @@
 # PathFind
 
-PathFind is a C++ implementation of the A* algorithm for pathfinding on a grid. The program reads a grid from standard input, where each cell has a specific cost associated with it, and finds the shortest path from a start point to an end point.
+This is a C++ implementation of the A* algorithm for pathfinding on a grid. The program reads a grid from standard input, where each cell has a specific cost associated with it, and finds the shortest path from a start point to an end point.
 
 ## Features
 
